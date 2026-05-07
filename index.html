@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ardışık Sayı Kuralları</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-math" id="bg-math"></div>
+
+<!-- LOBI -->
+<div id="lobby" class="view active">
+  <h1 class="lobby-title">Ardışık Sayı Kuralları</h1>
+  <div class="lobby-wrap">
+    <div class="lobby-left">
+      <button class="lobby-btn" onclick="go('toplama')" onmouseenter="hoverSound()">+ Toplama</button>
+      <button class="lobby-btn" onclick="go('cikarma')" onmouseenter="hoverSound()">− Çıkarma</button>
+      <button class="lobby-btn" onclick="go('carpma')" onmouseenter="hoverSound()">× Çarpma</button>
+      <button class="lobby-btn" onclick="go('bolme')" onmouseenter="hoverSound()">÷ Bölme</button>
+    </div>
+    <div class="lobby-deco">
+      <div class="deco-math-block">
+        <div class="deco-pixel tl"></div>
+        <div class="deco-pixel tr"></div>
+        <div class="deco-pixel bl"></div>
+        <div class="deco-pixel br"></div>
+        <div class="deco-sum">∑</div>
+        <div class="deco-eq">=</div>
+        <div class="deco-fraction">
+          <div class="deco-top">n(n+1)</div>
+          <div class="deco-bottom">2</div>
+        </div>
+      </div>
+      <div class="deco-sub">Ardışık Sayıların Toplamı</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOPLAMA -->
+<div id="toplama" class="view">
+  <button class="back" onclick="go('lobby')">← Geri Dön</button>
+  <h2 class="cat-title">Toplama Kuralları</h2>
+  <div class="cat-wrap">
+    <div class="cat-left">
+      <button class="cat-btn active" onclick="showRule('toplama',0)">Kural 1</button>
+      <button class="cat-btn" onclick="showRule('toplama',1)">Kural 2</button>
+      <button class="cat-btn" onclick="showRule('toplama',2)">Kural 3</button>
+    </div>
+    <div class="cat-right">
+      <div class="card rule-view active" id="card-t1">
+        <h3>Kural 1 — 1'den n'e Kadar Toplam</h3>
+        <div class="math-section"><strong>Açıklama.</strong> <span class="f">n</span> = terim sayısı. Dizi: <span class="f">1, 2, 3, …, n</span> (toplam <span class="f">n</span> terim). İlk terim = 1, son terim = <span class="f">n</span>.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">S = n · (ilk + son) / 2 = n(n+1) / 2</span></div>
+        <div class="math-section"><strong>Kanıt.</strong> Sayıları tersten yazıp alt alta toplayalım:<br>
+<span class="f">S = 1 + 2 + 3 + … + (n−2) + (n−1) + n</span><br>
+<span class="f">S = n + (n−1) + (n−2) + … + 3 + 2 + 1</span><br>
+Alt alta toplandığında her sütun:<br>
+<span class="f">1 + n = n+1</span>,<br>
+<span class="f">2 + (n−1) = n+1</span>,<br>
+<span class="f">3 + (n−2) = n+1</span> …<br>
+Her sütunun toplamı <span class="f">n+1</span>'dir. <span class="f">n</span> tane sütun (terim) olduğu için:<br>
+<span class="f">2S = n · (n+1)</span> → <span class="f">S = n(n+1)/2</span>.<br>
+<em><span class="f">n+1 = 1 + n = ilk terim + son terim</span>’dir. Bağımsız bir sayı veya "çift sayısı" değildir.</em></div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">n</span> (terim sayısı) girer. Program otomatik: ilk = 1, son = n. Sonra <span class="f">S = n·(n+1)/2</span> hesaplar.</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">n = 6</span> terim: <span class="f">1, 2, 3, 4, 5, 6</span>. İlk+son = <span class="f">1+6 = 7 = n+1</span>. <span class="f">S = 6·7/2 = 21</span>.</div>
+      <div class="formula">S = n(n+1) / 2</div>
+      <div class="input-row"><div class="calc-display" id="d-t1"></div><div class="numpad" id="np-t1"></div></div>
+      <button class="btn-calc" onclick="calc('t1','sumN')">Hesapla</button>
+      <div class="out" id="o-t1"></div>
+      <button class="btn-verify" onclick="verify('t1','sumN')">Kuralı Doğrula</button>
+      <div class="vout" id="v-t1"></div>
+    </div>
+      <div class="card rule-view" id="card-t2">
+        <h3>Kural 2 — Ortadaki Sayı Yöntemi</h3>
+        <div class="math-section"><strong>Açıklama.</strong> <span class="f">n</span> = terim sayısı. Dizi: <span class="f">1, 2, …, n</span>. <span class="f">n</span> tek olduğunda ortada bir sayı vardır: <span class="f">(n+1)/2</span>. Toplam = terim sayısı × ortadaki sayı.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">S = n · (n+1) / 2</span> (aynı sonuç)</div>
+        <div class="math-section"><strong>Kanıt.</strong> <span class="f">n = 5</span> terim: <span class="f">1, 2, 3, 4, 5</span>. Ortadaki sayı <span class="f">3 = (5+1)/2</span>. Simetri vardır: <span class="f">1+5 = 6, 2+4 = 6</span>. Her simetrik çiftin toplamı = ilk + son = <span class="f">1+5 = n+1</span>. Ortalama = <span class="f">(n+1)/2 = (ilk+son)/2</span>. <span class="f">n</span> tane sayı, her biri ortalamaya göre simetrik. Toplam = <span class="f">n × ortalama = n × (n+1)/2</span>.</div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">n</span> (terim sayısı) girer. Önce <span class="f">n</span> tek mi kontrol edilir. Tek ise <span class="f">ortanca = (n+1)/2</span>, <span class="f">S = n × ortanca</span> hesaplanır.</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">n = 7</span> terim: <span class="f">1, 2, 3, 4, 5, 6, 7</span>. Ortanca <span class="f">(7+1)/2 = 4</span>. <span class="f">S = 7 × 4 = 28</span>. Formül: <span class="f">7·8/2 = 28</span>.</div>
+      <div class="formula">S = n · (n+1) / 2</div>
+      <div class="input-row"><div class="calc-display" id="d-t2"></div><div class="numpad" id="np-t2"></div></div>
+      <button class="btn-calc" onclick="calc('t2','sumMid')">Hesapla</button>
+      <div class="out" id="o-t2"></div>
+      <button class="btn-verify" onclick="verify('t2','sumMid')">Kuralı Doğrula</button>
+      <div class="vout" id="v-t2"></div>
+    </div>
+      <div class="card rule-view" id="card-t3">
+        <h3>Kural 3 — İlk ve Sonu Eşleştirme</h3>
+        <div class="math-section"><strong>Açıklama.</strong> <span class="f">n</span> = terim sayısı. Dizi: <span class="f">1, 2, …, n</span>. İlk + son = <span class="f">1 + n = n+1</span>. Her simetrik çiftin toplamı aynıdır: <span class="f">n+1</span>. Çift sayısı = <span class="f">n/2</span>.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">S = (n/2) · (n+1)</span>. Burada <span class="f">n+1</span> = ilk terim + son terim.</div>
+        <div class="math-section"><strong>Kanıt.</strong> <span class="f">n = 6</span> terim: <span class="f">1, 2, 3, 4, 5, 6</span>. Eşleştir: <span class="f">(1,6), (2,5), (3,4)</span>. Her simetrik çiftin toplamı = ilk + son = <span class="f">1+6 = n+1 = 7</span>. Çift sayısı = <span class="f">6/2 = 3</span>. <span class="f">S = 3 × 7 = 21</span>. Genel: <span class="f">S = (n/2) · (n+1)</span>, burada <span class="f">n+1 = ilk + son</span>.</div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">n</span> (terim sayısı) girer. Program otomatik: ilk = 1, son = n. <span class="f">çift sayısı = n/2</span>, her çiftin toplamı = ilk+son = <span class="f">n+1</span>, <span class="f">S = (n/2)·(n+1)</span> hesaplar.</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">n = 8</span> terim: <span class="f">1, 2, 3, 4, 5, 6, 7, 8</span>. Eşleştir: <span class="f">(1,8), (2,7), (3,6), (4,5)</span>. Her çiftin toplamı = ilk+son = <span class="f">1+8 = 9 = n+1</span>. <span class="f">4</span> çift. <span class="f">S = 4 × 9 = 36</span>.</div>
+      <div class="formula">S = (n/2) · (n+1)</div>
+      <div class="input-row"><div class="calc-display" id="d-t3"></div><div class="numpad" id="np-t3"></div></div>
+      <button class="btn-calc" onclick="calc('t3','sumPair')">Hesapla</button>
+      <div class="out" id="o-t3"></div>
+      <button class="btn-verify" onclick="verify('t3','sumPair')">Kuralı Doğrula</button>
+      <div class="vout" id="v-t3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CIKARMA -->
+<div id="cikarma" class="view">
+  <button class="back" onclick="go('lobby')">← Geri Dön</button>
+  <h2 class="cat-title">Çıkarma Kuralları</h2>
+  <div class="cat-wrap">
+    <div class="cat-left">
+      <button class="cat-btn active" onclick="showRule('cikarma',0)">Kural 1</button>
+      <button class="cat-btn" onclick="showRule('cikarma',1)">Kural 2</button>
+      <button class="cat-btn" onclick="showRule('cikarma',2)">Kural 3</button>
+    </div>
+    <div class="cat-right">
+      <div class="card rule-view active" id="card-c1">
+        <h3>Kural 1 — Son ve İlk Terim Arasındaki Fark</h3>
+        <div class="math-section"><strong>Açıklama.</strong> <span class="f">n</span> = terim sayısı. Dizi: <span class="f">1, 2, 3, …, n</span> (toplam <span class="f">n</span> terim). İlk = 1, son = <span class="f">n</span>. Aradaki fark = son − ilk = <span class="f">n−1</span>.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">Fark = n − 1</span></div>
+        <div class="math-section"><strong>Kanıt.</strong> <span class="f">1</span>'den <span class="f">n</span>'ye gitmek için <span class="f">n−1</span> adım gerekir (her adım +1). Son − İlk = <span class="f">n − 1</span>.</div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">n</span> (terim sayısı) girer. Program otomatik: ilk = 1, son = n. Sonra <span class="f">fark = n − 1</span> hesaplar.</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">n = 10</span> terim: <span class="f">1, 2, …, 10</span>. Son − İlk = <span class="f">10 − 1 = 9</span>.</div>
+      <div class="formula">Fark = n − 1</div>
+      <div class="input-row"><div class="calc-display" id="d-c1"></div><div class="numpad" id="np-c1"></div></div>
+      <button class="btn-calc" onclick="calc('c1','diffFL')">Hesapla</button>
+      <div class="out" id="o-c1"></div>
+      <button class="btn-verify" onclick="verify('c1','diffFL')">Kuralı Doğrula</button>
+      <div class="vout" id="v-c1"></div>
+    </div>
+      <div class="card rule-view" id="card-c2">
+        <h3>Kural 2 — Ardışık İki Sayının Farkı</h3>
+        <div class="math-section"><strong>Açıklama.</strong> <span class="f">n</span> = bir terimin değeri. Ardışık iki sayı: <span class="f">n</span> ve <span class="f">n+1</span>. Doğal sayılar tanımı gereği birer birer artar. Fark daima <span class="f">1</span>'dir.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">(n+1) − n = 1</span></div>
+        <div class="math-section"><strong>Kanıt.</strong> <span class="f">(n+1) − n = n − n + 1 = 1</span>. Doğal sayı tanımı gereği her sayı bir öncekinden <span class="f">1</span> fazladır.</div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">n</span> (bir terim) girer. Program <span class="f">(n+1) − n</span> hesaplar (sonuç her zaman <span class="f">1</span>).</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">n = 15</span> → <span class="f">16 − 15 = 1</span>. <span class="f">n = 100</span> → <span class="f">101 − 100 = 1</span>.</div>
+      <div class="formula">(n+1) − n = 1</div>
+      <div class="input-row"><div class="calc-display" id="d-c2"></div><div class="numpad" id="np-c2"></div></div>
+      <button class="btn-calc" onclick="calc('c2','diff1')">Hesapla</button>
+      <div class="out" id="o-c2"></div>
+      <button class="btn-verify" onclick="verify('c2','diff1')">Kuralı Doğrula</button>
+      <div class="vout" id="v-c2"></div>
+    </div>
+      <div class="card rule-view" id="card-c3">
+        <h3>Kural 3 — İlk n ve İlk (n−1) Sayının Toplamları Farkı</h3>
+        <div class="math-section"><strong>Açıklama.</strong> <span class="f">n</span> = terim sayısı. İlk <span class="f">n</span> sayının toplamından ilk <span class="f">n−1</span> sayının toplamını çıkarınca son eklenen terim kalır.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">S<sub>n</sub> − S<sub>n−1</sub> = n</span> (son terim)</div>
+        <div class="math-section"><strong>Kanıt.</strong> <span class="f">S<sub>n</sub> = 1 + 2 + … + (n−1) + n</span> ve <span class="f">S<sub>n−1</sub> = 1 + 2 + … + (n−1)</span>. İkinci toplam birincinin parçasıdır. Çıkarınca geriye sadece son terim <span class="f">n</span> kalır.</div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">n</span> (terim sayısı) girer. Program <span class="f">S<sub>n</sub> = n(n+1)/2</span> ve <span class="f">S<sub>n−1</sub> = (n−1)n/2</span> hesaplar, farkı alır: sonuç = son terim = <span class="f">n</span>.</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">n = 6</span> terim: <span class="f">S<sub>6</sub> = 21, S<sub>5</sub> = 15</span>. <span class="f">21 − 15 = 6</span> (son terim).</div>
+      <div class="formula">S<sub>n</sub> − S<sub>n−1</sub> = n</div>
+      <div class="input-row"><div class="calc-display" id="d-c3"></div><div class="numpad" id="np-c3"></div></div>
+      <button class="btn-calc" onclick="calc('c3','diffSq')">Hesapla</button>
+      <div class="out" id="o-c3"></div>
+      <button class="btn-verify" onclick="verify('c3','diffSq')">Kuralı Doğrula</button>
+      <div class="vout" id="v-c3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CARPMA -->
+<div id="carpma" class="view">
+  <button class="back" onclick="go('lobby')">← Geri Dön</button>
+  <h2 class="cat-title">Çarpma Kuralları</h2>
+  <div class="cat-wrap">
+    <div class="cat-left">
+      <button class="cat-btn active" onclick="showRule('carpma',0)">Kural 1</button>
+      <button class="cat-btn" onclick="showRule('carpma',1)">Kural 2</button>
+      <button class="cat-btn" onclick="showRule('carpma',2)">Kural 3</button>
+    </div>
+    <div class="cat-right">
+      <div class="card rule-view active" id="card-r1">
+        <h3>Kural 1 — Üç Ardışık Sayının Çarpımı</h3>
+        <div class="math-section"><strong>Açıklama.</strong> Ortadaki sayı <span class="f">x</span> olan üç ardışık sayının çarpımı <span class="f">x³ − x</span>'e eşittir. Tek değişken <span class="f">x</span>.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">(x−1) · x · (x+1) = x³ − x</span></div>
+        <div class="math-section"><strong>Kanıt.</strong> Önce <span class="f">(x−1)(x+1)</span> çarpalım. <span class="f">(a−b)(a+b) = a²−b²</span> özdeşliğinden: <span class="f">(x−1)(x+1) = x² − 1</span>. Sonra <span class="f">x</span> ile çarpalım: <span class="f">x · (x² − 1) = x³ − x</span>.</div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">x</span> girer. Program <span class="f">(x−1)·x·(x+1)</span> ve <span class="f">x³ − x</span> hesaplar, eşit mi kontrol eder.</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">x = 5</span> → <span class="f">4·5·6 = 120</span>. Formül: <span class="f">5³ − 5 = 125 − 5 = 120</span>.</div>
+      <div class="formula">(x−1) · x · (x+1) = x³ − x</div>
+      <div class="input-row"><div class="calc-display" id="d-r1"></div><div class="numpad" id="np-r1"></div></div>
+      <button class="btn-calc" onclick="calc('r1','prod3')">Hesapla</button>
+      <div class="out" id="o-r1"></div>
+      <button class="btn-verify" onclick="verify('r1','prod3')">Kuralı Doğrula</button>
+      <div class="vout" id="v-r1"></div>
+    </div>
+      <div class="card rule-view" id="card-r2">
+        <h3>Kural 2 — İki Ardışık Sayının Çarpımı Çifttir</h3>
+        <div class="math-section"><strong>Açıklama.</strong> <span class="f">x</span> = bir terimin değeri. <span class="f">x</span> ve <span class="f">x+1</span>'den biri tek, diğeri çifttir. Çarpımları daima çift sayıdır.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">x(x+1)</span> her zaman çifttir.</div>
+        <div class="math-section"><strong>Kanıt.</strong> İki durum var:<br>
+1) <span class="f">x</span> çiftse: <span class="f">x = 2k</span>. <span class="f">x(x+1) = 2k(x+1)</span> → 2'nin katı.<br>
+2) <span class="f">x</span> tekse: <span class="f">x+1</span> çift. <span class="f">x+1 = 2k</span>. <span class="f">x(x+1) = x·2k</span> → yine 2'nin katı.<br>
+Her iki durumda çarpım çifttir.</div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">x</span> (bir terim) girer. Program <span class="f">x·(x+1)</span> hesaplar ve <span class="f">% 2 === 0</span> kontrolü yapar.</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">x = 4</span> → <span class="f">4·5 = 20</span> (çift). <span class="f">x = 9</span> → <span class="f">9·10 = 90</span> (çift).</div>
+      <div class="formula">x(x+1) ≡ 0 (mod 2)</div>
+      <div class="input-row"><div class="calc-display" id="d-r2"></div><div class="numpad" id="np-r2"></div></div>
+      <button class="btn-calc" onclick="calc('r2','prodEven')">Hesapla</button>
+      <div class="out" id="o-r2"></div>
+      <button class="btn-verify" onclick="verify('r2','prodEven')">Kuralı Doğrula</button>
+      <div class="vout" id="v-r2"></div>
+    </div>
+      <div class="card rule-view" id="card-r3">
+        <h3>Kural 3 — Faktöriyel</h3>
+        <div class="math-section"><strong>Açıklama.</strong> <span class="f">n</span> faktöriyel, 1'den <span class="f">n</span>'e kadar tüm doğal sayıların çarpımıdır. Tanım gereği <span class="f">0! = 1</span>. Tek değişken <span class="f">n</span>.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">n! = 1 · 2 · 3 · … · n</span>, <span class="f">n ≥ 0</span></div>
+        <div class="math-section"><strong>Kanıt.</strong> <span class="f">n!</span> tanımı gereği <span class="f">n</span> adet çarpandır. Rekürsif olarak: <span class="f">n! = n · (n−1)!</span>, taban durum <span class="f">0! = 1</span>. <span class="f">n = 0</span> için boş çarpımın birim elemanı <span class="f">1</span>'dir.</div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">n</span> girer. Program <span class="f">n ≥ 0</span> ve tam sayı kontrolü yapar, sonra <span class="f">1</span>'den <span class="f">n</span>'e kadar çarpar.</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">n = 5</span> → <span class="f">5! = 1·2·3·4·5 = 120</span>. <span class="f">n = 0</span> → <span class="f">0! = 1</span>.</div>
+      <div class="formula">n! = 1 · 2 · 3 · … · n</div>
+      <div class="input-row"><div class="calc-display" id="d-r3"></div><div class="numpad" id="np-r3"></div></div>
+      <button class="btn-calc" onclick="calc('r3','fact')">Hesapla</button>
+      <div class="out" id="o-r3"></div>
+      <button class="btn-verify" onclick="verify('r3','fact')">Kuralı Doğrula</button>
+      <div class="vout" id="v-r3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOLME -->
+<div id="bolme" class="view">
+  <button class="back" onclick="go('lobby')">← Geri Dön</button>
+  <h2 class="cat-title">Bölme Kuralları</h2>
+  <div class="cat-wrap">
+    <div class="cat-left">
+      <button class="cat-btn active" onclick="showRule('bolme',0)">Kural 1</button>
+      <button class="cat-btn" onclick="showRule('bolme',1)">Kural 2</button>
+      <button class="cat-btn" onclick="showRule('bolme',2)">Kural 3</button>
+    </div>
+    <div class="cat-right">
+      <div class="card rule-view active" id="card-b1">
+        <h3>Kural 1 — Büyüğün Küçüğe Oranı</h3>
+        <div class="math-section"><strong>Açıklama.</strong> İki ardışık sayıdan büyüğünün (<span class="f">x+1</span>) küçüğüne (<span class="f">x</span>) bölümü <span class="f">1 + 1/x</span> şeklinde yazılır. Tek değişken <span class="f">x</span>.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">(x+1) / x = 1 + 1/x</span>, <span class="f">x ≠ 0</span></div>
+        <div class="math-section"><strong>Kanıt.</strong> <span class="f">(x+1)/x</span> ifadesini paydanın üzerine açalım: <span class="f">x/x + 1/x = 1 + 1/x</span>. <span class="f">x</span> büyüdükçe <span class="f">1/x</span> küçülür, oran <span class="f">1</span>'e yaklaşır.</div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">x</span> girer. Program <span class="f">(x+1)/x</span> ve <span class="f">1 + 1/x</span> hesaplar, eşit mi kontrol eder.</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">x = 4</span> → <span class="f">5/4 = 1.25 = 1 + 0.25 = 1 + 1/4</span>.</div>
+      <div class="formula">(x+1) / x = 1 + 1/x</div>
+      <div class="input-row"><div class="calc-display" id="d-b1"></div><div class="numpad" id="np-b1"></div></div>
+      <button class="btn-calc" onclick="calc('b1','div1')">Hesapla</button>
+      <div class="out" id="o-b1"></div>
+      <button class="btn-verify" onclick="verify('b1','div1')">Kuralı Doğrula</button>
+      <div class="vout" id="v-b1"></div>
+    </div>
+      <div class="card rule-view" id="card-b2">
+        <h3>Kural 2 — Küçüğün Büyüğe Oranı</h3>
+        <div class="math-section"><strong>Açıklama.</strong> İki ardışık sayıdan küçüğünün (<span class="f">x</span>) büyüğüne (<span class="f">x+1</span>) bölümü <span class="f">1 − 1/(x+1)</span> şeklinde yazılır. Tek değişken <span class="f">x</span>.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">x / (x+1) = 1 − 1/(x+1)</span>, <span class="f">x ≠ −1</span></div>
+        <div class="math-section"><strong>Kanıt.</strong> Payı <span class="f">x = (x+1) − 1</span> yazalım: <span class="f">[(x+1)−1]/(x+1) = (x+1)/(x+1) − 1/(x+1) = 1 − 1/(x+1)</span>. Bu her zaman <span class="f">1</span>'den küçüktür.</div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">x</span> girer. Program <span class="f">x/(x+1)</span> ve <span class="f">1 − 1/(x+1)</span> hesaplar, eşit mi kontrol eder.</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">x = 4</span> → <span class="f">4/5 = 0.8 = 1 − 0.2 = 1 − 1/5</span>.</div>
+      <div class="formula">x / (x+1) = 1 − 1/(x+1)</div>
+      <div class="input-row"><div class="calc-display" id="d-b2"></div><div class="numpad" id="np-b2"></div></div>
+      <button class="btn-calc" onclick="calc('b2','div2')">Hesapla</button>
+      <div class="out" id="o-b2"></div>
+      <button class="btn-verify" onclick="verify('b2','div2')">Kuralı Doğrula</button>
+      <div class="vout" id="v-b2"></div>
+    </div>
+      <div class="card rule-view" id="card-b3">
+        <h3>Kural 3 — İki Komşu Sayı Çarpımı 2'ye Bölünür</h3>
+        <div class="math-section"><strong>Açıklama.</strong> <span class="f">x</span> = bir terimin değeri. İki ardışık sayı <span class="f">x</span> ve <span class="f">x+1</span>'in çarpımı her zaman 2'ye tam bölünür.</div>
+        <div class="math-section"><strong>Formül.</strong> <span class="f">x(x+1) / 2</span> daima tam sayıdır.</div>
+        <div class="math-section"><strong>Kanıt.</strong> Ardışık iki sayıdan biri çift, biri tektir (Çarpma Kuralı 2). Çift olan sayı <span class="f">2</span>'ye bölündüğünden, çarpım da <span class="f">2</span>'ye bölünür. Modüler aritmetikle: <span class="f">ℤ₂</span> üzerinde <span class="f">x ≡ 0̄</span> ise <span class="f">x(x+1) = 0̄·1̄ = 0̄</span>; <span class="f">x ≡ 1̄</span> ise <span class="f">x+1 ≡ 0̄</span>, dolayısıyla <span class="f">x(x+1) = 1̄·0̄ = 0̄</span>.</div>
+        <div class="math-section"><strong>Yazılım.</strong> Kullanıcı <span class="f">x</span> (bir terim) girer. Program <span class="f">x·(x+1)</span> hesaplar, <span class="f">2</span>'ye bölünüp bölünmediğini (<span class="f">% 2 === 0</span>) kontrol eder.</div>
+        <div class="math-section"><strong>Örnek.</strong> <span class="f">x = 7</span> → <span class="f">7·8 = 56</span>, <span class="f">56/2 = 28</span> (tam sayı). <span class="f">x = 4</span> → <span class="f">4·5 = 20</span>, <span class="f">20/2 = 10</span>.</div>
+      <div class="formula">2 | x(x+1)</div>
+      <div class="input-row"><div class="calc-display" id="d-b3"></div><div class="numpad" id="np-b3"></div></div>
+      <button class="btn-calc" onclick="calc('b3','divRule')">Hesapla</button>
+      <div class="out" id="o-b3"></div>
+      <button class="btn-verify" onclick="verify('b3','divRule')">Kuralı Doğrula</button>
+      <div class="vout" id="v-b3"></div>
+    </div>
+  </div>
+</div>
+
+<footer>Bu proje ardışık sayılar üzerine geliştirilmiştir.</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
